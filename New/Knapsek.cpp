@@ -1,27 +1,36 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-int knapsek(int benifit[],int weight[],int n,int k){
- int a[n+1][k+1];
- for(int i=0; i<=n;i++){
-    for(int j=0; j<=k; j++){
-        if(i==0 || j==0) a[i][j]=0;
-        else if(weight[i]<=j) a[i][j]=max((benifit[i]+a[i-1][j-weight[i]]),a[i-1][j]);
-        else a[i][j]=a[i-1][j];
+int solve(int m, int n, int val[], int we[]){
+    int a[n+1][m+1];
+    for(int i=0; i<=n; i++){
+        for(int j=0; j<=m; j++){
+            if(i== 0 || j==0){
+                a[i][j]= 0;
+            }
+            else if(we[i-1]<=j){
+                a[i][j]= max((val[i-1]+a[i-1][j-we[i-1]]),a[i-1][j]);
+            }
+            else{
+                a[i][j] = a[i-1][j];
+            }
+        }
     }
- }
- return a[n][k];
+    return a[n][m];
 }
 
 int main(){
- int benifit[50],weight[50],k,n;
- cin>>n;
- for(int i=0; i<n; i++){
-    cin>>benifit[i]>>weight[i];
- }
- cin>>k;
- int result = knapsek(benifit,weight,n,k);
- cout<<result<<endl;
+    int k; cin>>k;
+    int n; cin>>n;
+    int profit[n],weight[n];
+    for(int i=0; i<n; i++){
+        cin>>profit[i];
+    }
+    for(int i=0; i<n; i++){
+        cin>>weight[i];
+    }
 
-return 0;
+    int result = solve(k,n,profit,weight);
+    cout<<result<<endl;
+    return 0;
 }
